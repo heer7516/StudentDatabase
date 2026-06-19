@@ -1,23 +1,34 @@
-#include "StudentSystem.h"
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+
+#include "Student.h"
+
+using namespace std;
 void loadStudents(Student students[], int& count)
 {
-    ifstream fin("students.txt");
+    ifstream fin("C:\\Users\\HEER\\Desktop\\Lab05\\Lab05\\x64\\Debug\\Students90.txt");
 
-   
     count = 0;
 
-    while (fin >> students[count].firstName
-        >> students[count].lastName
-        >> students[count].id
-        >> students[count].grade)
+    while (fin >>
+        students[count].firstName >>
+        students[count].lastName >>
+        students[count].id >>
+        students[count].assignments[0] >>
+        students[count].assignments[1] >>
+        students[count].assignments[2] >>
+        students[count].assignments[3] >>
+        students[count].assignments[4] >>
+        students[count].average >>
+        students[count].courses[0] >>
+        students[count].courses[1] >>
+        students[count].courses[2])
     {
         count++;
-
-        if (count >= MAX_STUDENTS)
-        {
-            break;
-        }
     }
+    
 
     fin.close();
 }
@@ -46,7 +57,7 @@ void calculateAverages(double grades[][NUM_ASSIGNMENTS],
             total += grades[row][col];
         }
 
-        students[row].grade = total / NUM_ASSIGNMENTS;
+        students[row].average = total / NUM_ASSIGNMENTS;
     }
 }
 void displayAllStudentInfo(double grades[][NUM_ASSIGNMENTS],
@@ -80,7 +91,7 @@ void displayAllStudentInfo(double grades[][NUM_ASSIGNMENTS],
         }
 
         cout << fixed << setprecision(1)
-            << setw(8) << students[row].grade;
+            << setw(8) << students[row].average;
 
         cout << endl;
     }
@@ -115,7 +126,7 @@ void updateAssignment(double grades[][NUM_ASSIGNMENTS],
                 total += grades[i][j];
             }
 
-            students[i].grade = total / NUM_ASSIGNMENTS;
+            students[i].average = total / NUM_ASSIGNMENTS;
 
             cout << "Assignment updated.\n";
 
@@ -130,7 +141,7 @@ void addStudent(Student students[],
     int& count,
     double grades[][NUM_ASSIGNMENTS])
 {
-    if (count >= MAX_STUDENTS)
+    if (count >= STUDENT_MAX)
     {
         cout << "Maximum students reached.\n";
         return;
@@ -157,7 +168,7 @@ void addStudent(Student students[],
         total += grades[count][col];
     }
 
-    students[count].grade = total / NUM_ASSIGNMENTS;
+    students[count].average = total / NUM_ASSIGNMENTS;
 
     count++;
 
@@ -173,7 +184,7 @@ void saveStudents(Student students[], int count)
         fout << students[i].firstName << " "
             << students[i].lastName << " "
             << students[i].id << " "
-            << students[i].grade << endl;
+            << students[i].average << endl;
     }
 
     fout.close();
@@ -215,7 +226,7 @@ void highlightSearch(double grades[][NUM_ASSIGNMENTS],
                 cout << grades[row][col] << " ";
             }
 
-            cout << students[row].grade;
+            cout << students[row].average;
 
             cout << "\033[0m";
             cout << endl;
